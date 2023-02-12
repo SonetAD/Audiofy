@@ -1,5 +1,5 @@
 const pdfViewer = (() => {
-  const url = './../story.pdf';
+  const filePath = './../story.pdf';
   const canvas = document.getElementById('pdf-render'),
     topBar = document.getElementById('top-bar'),
     ctx = canvas.getContext('2d');
@@ -38,7 +38,7 @@ const pdfViewer = (() => {
   };
 
   // Getting the document
-  global.getDoc(url);
+  global.getDoc(filePath);
 
   // Move pages
 

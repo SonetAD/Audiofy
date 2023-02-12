@@ -12,8 +12,8 @@ class Global {
     this.pageNumIsPending = null;
   }
 
-  getDoc(url) {
-    pdfjsLib.getDocument(url).promise.then((doc) => {
+  getDoc(filePath) {
+    pdfjsLib.getDocument(filePath).promise.then((doc) => {
       this.pdfDoc = doc;
       this.renderPage();
     });
@@ -31,8 +31,8 @@ class Global {
       });
       // scale
       const viewport = page.getViewport({ scale: this.scale });
-      // canvas.height = viewport.height;
-      // canvas.width = viewport.width;
+      this.canvas.height = viewport.height;
+      this.canvas.width = viewport.width;
 
       const renderCtx = {
         canvasContext: this.ctx,

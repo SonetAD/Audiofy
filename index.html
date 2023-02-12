@@ -21,7 +21,7 @@
 
     <link rel="stylesheet" href="css/main.css" />
   </head>
-  <body>
+  <body class="vh-100">
     <!-- Navbar -->
     <nav class="navbar navbar-dark bg-dark">
       <div class="container-fluid">
@@ -30,16 +30,18 @@
     </nav>
     <!-- Library -->
     <section class="p-5 container">
-      <div class="row text-center">
-        <div class="col-md">
-          <div class="card bg-dark text-light">
-            <canvas id="book-preview"></canvas>
+      <div class="row text-center gy-4">
+        <div class="col-md-3">
+          <div class="card custom-card shadow rounded-5">
+            <div class="card-body p-4">
+              <canvas class="card-img" id="book-preview"></canvas>
+              <h3 class="card-title">Read: 40%</h3>
+            </div>
           </div>
         </div>
-        <div class="col-md"></div>
-        <div class="col-md"></div>
       </div>
     </section>
+    <!-- test -->
 
     <div id="top-bar"></div>
     <div id="pdf">
@@ -56,7 +58,7 @@
     <script src="js/pdfjs/pdf.js"></script>
     <script src="js/globalvariables.js"></script>
     <script src="js/library.js"></script>
-    <script src="js/pdfviewer.js"></script>
+    <!-- <script src="js/pdfviewer.js"></script> -->
     <script src="js/tts.js"></script>
   </body>
 </html>
