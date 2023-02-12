@@ -32,7 +32,11 @@
     <section class="p-5 container">
       <div class="row text-center gy-4">
         <div class="col-md-3">
-          <div class="card custom-card shadow rounded-5">
+          <div
+            data-bs-toggle="modal"
+            data-bs-target="#pdfModal"
+            class="card custom-card shadow rounded-5"
+          >
             <div class="card-body p-4">
               <canvas class="card-img" id="book-preview"></canvas>
               <h3 class="card-title">Read: 40%</h3>
@@ -41,11 +45,37 @@
         </div>
       </div>
     </section>
-    <!-- test -->
 
-    <div id="top-bar"></div>
-    <div id="pdf">
-      <canvas id="pdf-render"></canvas>
+    <!-- Modal -->
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="pdfModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="pdfModalCenterTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="pdf-preview-pageNum"></h5>
+            <button
+              type="button"
+              class="close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body text-center">
+            <canvas id="pdf-render"></canvas>
+          </div>
+          <div class="modal-footer"></div>
+        </div>
+      </div>
     </div>
 
     <!-- javascript -->
@@ -58,7 +88,7 @@
     <script src="js/pdfjs/pdf.js"></script>
     <script src="js/globalvariables.js"></script>
     <script src="js/library.js"></script>
-    <!-- <script src="js/pdfviewer.js"></script> -->
+    <script src="js/pdfviewer.js"></script>
     <script src="js/tts.js"></script>
   </body>
 </html>

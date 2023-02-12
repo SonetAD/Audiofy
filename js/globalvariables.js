@@ -1,6 +1,6 @@
 class Global {
   static globalObjects = {};
-  constructor(objName, canvas, pageNum = 1, scale = 1.5) {
+  constructor(objName, canvas, pageNum = 1, scale = 1) {
     Global.globalObjects[objName] = this;
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
@@ -10,6 +10,7 @@ class Global {
     this.pageIsRendering = false;
     this.pdfText = [];
     this.pageNumIsPending = null;
+    this.pdfPreviewPageNum = document.getElementById('pdf-preview-pageNum');
   }
 
   getDoc(filePath) {
@@ -21,8 +22,8 @@ class Global {
 
   renderPage() {
     this.pageIsRendering = true;
+    this.pdfPreviewPageNum.innerText = `Page ${this.pageNum} of ${this.pdfDoc.numPages}`;
     //   Get the page
-
     this.pdfDoc.getPage(this.pageNum).then((page) => {
       //  extracting text from pdf
 

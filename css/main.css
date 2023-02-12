@@ -25,3 +25,7 @@ body {
   scale: 1.1;
   cursor: pointer;
 }
+
+.current-page {
+  width: 10px;
+}

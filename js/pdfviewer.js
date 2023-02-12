@@ -1,10 +1,14 @@
 const pdfViewer = (() => {
   const filePath = './../story.pdf';
   const canvas = document.getElementById('pdf-render'),
-    topBar = document.getElementById('top-bar'),
-    ctx = canvas.getContext('2d');
+    pdfPreviewPageNum = document.getElementById('pdf-preview-pageNum'),
+    ctx = canvas.getContext('2d'),
+    currentPage = document.getElementById('current-page'),
+    global = new Global('viewer', canvas, 1, 1.5);
 
-  const global = new Global('viewer', canvas);
+  // Getting the document
+
+  global.getDoc(filePath);
 
   // Check if  page is rendering
 
@@ -30,15 +34,13 @@ const pdfViewer = (() => {
   // Show next page
 
   const showNextPage = () => {
+    console.log(global.totalPage);
     if (global.pageNum >= global.pdfDoc.numPages) {
       return;
     }
     global.pageNum++;
     qPageRendering(global.pageNum);
   };
-
-  // Getting the document
-  global.getDoc(filePath);
 
   // Move pages
 
@@ -52,4 +54,4 @@ const pdfViewer = (() => {
   });
 })();
 
-console.log(Global.globalObjects.viewer);
+// console.log(Global.globalObjects.viewer);
