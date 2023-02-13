@@ -1,10 +1,14 @@
 const pdfViewer = (() => {
-  const filePath = './../story.pdf';
-  const canvas = document.getElementById('pdf-render'),
-    pdfPreviewPageNum = document.getElementById('pdf-preview-pageNum'),
-    ctx = canvas.getContext('2d'),
-    currentPage = document.getElementById('current-page'),
-    global = new Global('viewer', canvas, 1, 1.5);
+  const filePath = './../story.pdf',
+    modalBody = document.querySelector('.modal-body'),
+    newCanvas = document.createElement('canvas');
+  newCanvas.id = 'pdf-render';
+  modalBody.appendChild(newCanvas);
+
+  const canvas = document.querySelector('#pdf-render'),
+    ctx = canvas.getContext('2d');
+
+  const global = new Global('viewer', canvas, 1, 1.5);
 
   // Getting the document
 

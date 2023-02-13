@@ -3,7 +3,5 @@ const library = (() => {
   const global = new Global('preview', canvas);
 
   const url = './../story.pdf';
-  global.getDoc(url);
+  global.getDoc(url, true);
 })();
-
-console.log(document.getElementById('dropdownMenueLink').value);

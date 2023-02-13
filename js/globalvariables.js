@@ -10,10 +10,13 @@ class Global {
     this.pageIsRendering = false;
     this.pdfText = [];
     this.pageNumIsPending = null;
-    this.pdfPreviewPageNum = document.getElementById('pdf-preview-pageNum');
+    this.modalTitle = document.querySelector('.modal-title');
+    this.modalBody = document.querySelector('.modal-body');
+    this.shortPreview = false;
   }
 
-  getDoc(filePath) {
+  getDoc(filePath, shortPreview) {
+    this.shortPreview = shortPreview;
     pdfjsLib.getDocument(filePath).promise.then((doc) => {
       this.pdfDoc = doc;
       this.renderPage();
@@ -22,7 +25,9 @@ class Global {
 
   renderPage() {
     this.pageIsRendering = true;
-    this.pdfPreviewPageNum.innerText = `Page ${this.pageNum} of ${this.pdfDoc.numPages}`;
+    if (!this.shortPreview) {
+      this.modalTitle.innerText = `Page ${this.pageNum} of ${this.pdfDoc.numPages}`;
+    }
     //   Get the page
     this.pdfDoc.getPage(this.pageNum).then((page) => {
       //  extracting text from pdf
