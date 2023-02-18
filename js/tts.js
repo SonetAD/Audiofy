@@ -1,4 +1,4 @@
-const tts = (() => {
+const tts = (text) => {
   const synth = new SpeechSynthesisUtterance();
   let voices = [];
 
@@ -23,7 +23,7 @@ const tts = (() => {
       return;
     }
 
-    const speakText = new SpeechSynthesisUtterance('Hi man');
+    const speakText = new SpeechSynthesisUtterance(text);
 
     speakText.addEventListener('error', (e) => {
       console.error('Something is not working.Please try again');
@@ -32,16 +32,11 @@ const tts = (() => {
     speakText.addEventListener('end', (e) => {
       console.log('End speaking');
     });
-    const selectedVoice =
-      selectVoices.selectedOptions[0].getAttribute('data-name');
     speakText.voice = voices[0];
     speakText.rate = 1;
     speakText.pitch = 1;
     speechSynthesis.speak(speakText);
   }
   speechSynthesis.addEventListener('voiceschanged', populatedVoiceList);
-
-  document.addEventListener('click', () => {
-    speak();
-  });
-})();
+  speak();
+};

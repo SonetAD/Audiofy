@@ -1,17 +1,13 @@
 class Global {
-  static globalObjects = {};
-  constructor(objName, canvas, pageNum = 1, scale = 1) {
-    Global.globalObjects[objName] = this;
+  constructor(canvas, pageNum = 1, scale = 1) {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
     this.pageNum = pageNum;
     this.scale = scale;
     this.pdfDoc = null;
     this.pageIsRendering = false;
-    this.pdfText = [];
+    this.pdfText = '';
     this.pageNumIsPending = null;
-    this.modalTitle = document.querySelector('.modal-title');
-    this.modalBody = document.querySelector('.modal-body');
     this.shortPreview = false;
   }
 
@@ -25,15 +21,15 @@ class Global {
 
   renderPage() {
     this.pageIsRendering = true;
-    if (!this.shortPreview) {
-      this.modalTitle.innerText = `Page ${this.pageNum} of ${this.pdfDoc.numPages}`;
-    }
+    // if (!this.shortPreview) {
+    //   this.modalTitle.innerText = `Page ${this.pageNum} of ${this.pdfDoc.numPages}`;
+    // }
     //   Get the page
     this.pdfDoc.getPage(this.pageNum).then((page) => {
       //  extracting text from pdf
 
       page.getTextContent().then((data) => {
-        data.items.forEach((txtObj) => this.pdfText.push(txtObj.str));
+        data.items.forEach((txtObj) => (this.pdfText += txtObj.str));
       });
       // scale
       const viewport = page.getViewport({ scale: this.scale });

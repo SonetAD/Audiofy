@@ -1,61 +1,118 @@
 const pdfViewer = (() => {
-  const filePath = './../story.pdf',
-    modalBody = document.querySelector('.modal-body'),
-    newCanvas = document.createElement('canvas');
-  newCanvas.id = 'pdf-render';
-  modalBody.appendChild(newCanvas);
+  const modalPlaceholder = document.getElementById('modal-place-holder');
+  let checkIfPlaying = false;
 
-  const canvas = document.querySelector('#pdf-render'),
-    ctx = canvas.getContext('2d');
+  const bookPreviewCard = document.querySelectorAll('.book-preview-card');
+  bookPreviewCard.forEach((targetedBook) => {
+    targetedBook.addEventListener('click', (e) => {
+      const filePath = targetedBook.getAttribute('file-path');
+      let randomId = '';
 
-  const global = new Global('viewer', canvas, 1, 1.5);
+      for (let i = 0; i < filePath.length; i++) {
+        let c = filePath[i];
+        if (c !== '.' && c !== '/') {
+          randomId += c;
+        }
+      }
+      modalPlaceholder.innerHTML = '';
 
-  // Getting the document
+      const modal = `
 
-  global.getDoc(filePath);
+<!-- Modal -->
+<div class="modal fade" id=${randomId} tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+          <div class="modal-body text-center" id="pdf-render-page">
+          <canvas id='pdf-render'></canvas>
+          </div>
+      <div id='play-status' role='button' class=" m-4 text-dark text-center">
+      <i class="fa-solid fa-play fa-2x "></i>
+      </div>
+    </div>
+  </div>
+</div>
+      `;
 
-  // Check if  page is rendering
+      e.target.setAttribute('data-bs-toggle', 'modal');
+      e.target.setAttribute('data-bs-target', `#${randomId}`);
+      modalPlaceholder.innerHTML = modal;
 
-  const qPageRendering = (num) => {
-    if (global.pageIsRendering) {
-      global.pageNumIsPending = num;
-    } else {
-      global.pageNum = num;
-      global.renderPage();
-    }
-  };
+      const canvas = document.querySelector('#pdf-render');
+      const playStatus = document.querySelector('#play-status');
+      playStatus.addEventListener('click', (e) => {
+        if (!checkIfPlaying) {
+          playStatus.innerHTML = `
+    <i id='pause' class="fa-solid fa-pause fa-2x"></i>
+          `;
+          checkIfPlaying = true;
+          tts('');
+        } else {
+          playStatus.innerHTML = `
 
-  // Show previous page
+        <i id='play' class="fa-solid fa-play fa-2x "></i>
+          `;
+          checkIfPlaying = false;
+          if (global.pdfText) {
+            tts(global.pdfText);
+          }
+        }
+      });
 
-  const showPreviousPage = () => {
-    if (global.pageNum <= 1) {
-      return;
-    }
-    global.pageNum--;
-    qPageRendering(global.pageNum);
-  };
+      // Test
 
-  // Show next page
+      const global = new Global(canvas, 1, 1.5);
+      // Getting the document
 
-  const showNextPage = () => {
-    console.log(global.totalPage);
-    if (global.pageNum >= global.pdfDoc.numPages) {
-      return;
-    }
-    global.pageNum++;
-    qPageRendering(global.pageNum);
-  };
+      global.getDoc(filePath);
 
-  // Move pages
+      // Check if  page is rendering
 
-  document.addEventListener('keypress', (e) => {
-    if (e.key.toLowerCase() === 'p') {
-      showPreviousPage();
-    } else if (e.key.toLowerCase() === 'n') {
-      showNextPage();
-    }
-    e.preventDefault();
+      const qPageRendering = (num) => {
+        if (global.pageIsRendering) {
+          global.pageNumIsPending = num;
+        } else {
+          global.pageNum = num;
+          global.renderPage();
+        }
+      };
+
+      // Show previous page
+
+      const showPreviousPage = () => {
+        if (global.pageNum <= 1) {
+          return;
+        }
+        global.pageNum--;
+        qPageRendering(global.pageNum);
+      };
+
+      // Show next page
+
+      const showNextPage = () => {
+        if (global.pageNum >= global.pdfDoc.numPages) {
+          return;
+        }
+        global.pageNum++;
+        qPageRendering(global.pageNum);
+      };
+
+      // Move pages
+
+      document.addEventListener('keypress', (e) => {
+        if (e.key.toLowerCase() === 'p') {
+          showPreviousPage();
+        } else if (e.key.toLowerCase() === 'n') {
+          showNextPage();
+        }
+        e.preventDefault();
+      });
+      e.preventDefault();
+    });
   });
 })();
-
-// console.log(Global.globalObjects.viewer);
