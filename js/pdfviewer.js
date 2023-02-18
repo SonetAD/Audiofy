@@ -1,6 +1,5 @@
 const pdfViewer = (() => {
   const modalPlaceholder = document.getElementById('modal-place-holder');
-  let checkIfPlaying = false;
 
   const bookPreviewCard = document.querySelectorAll('.book-preview-card');
   bookPreviewCard.forEach((targetedBook) => {
@@ -44,63 +43,78 @@ const pdfViewer = (() => {
       modalPlaceholder.innerHTML = modal;
 
       const canvas = document.querySelector('#pdf-render');
+
+      const global = new Global(canvas, 1, 1.5);
+      // Getting the document
+      global.getDoc(filePath);
+
+      // create tts
+
+      let tts = new TTS(global.pdfText);
+      const AudtMoveNextPage = setInterval(() => {
+        console.log(global.pdfText);
+        if (tts.isEnded) {
+          tts = new TTS(global.pdfText);
+          tts.speak();
+          if (!global.pdfText) {
+            showNextPage();
+          }
+          global.pdfText = '';
+        }
+      }, 1000);
+
+      let checkIfPlaying = true;
       const playStatus = document.querySelector('#play-status');
       playStatus.addEventListener('click', (e) => {
-        if (!checkIfPlaying) {
+        if (checkIfPlaying) {
           playStatus.innerHTML = `
-    <i id='pause' class="fa-solid fa-pause fa-2x"></i>
+    <i id='pause' class="fa-solid fa-play fa-2x"></i>
           `;
-          checkIfPlaying = true;
+          checkIfPlaying = false;
+          tts.resume();
           tts('');
         } else {
           playStatus.innerHTML = `
 
-        <i id='play' class="fa-solid fa-play fa-2x "></i>
+        <i id='play' class="fa-solid fa-pause fa-2x "></i>
           `;
-          checkIfPlaying = false;
-          if (global.pdfText) {
-            tts(global.pdfText);
-          }
+          checkIfPlaying = true;
+          tts.pause();
         }
       });
 
       // Test
 
-      const global = new Global(canvas, 1, 1.5);
-      // Getting the document
-
-      global.getDoc(filePath);
-
       // Check if  page is rendering
 
-      const qPageRendering = (num) => {
+      function qPageRendering(num) {
         if (global.pageIsRendering) {
           global.pageNumIsPending = num;
         } else {
           global.pageNum = num;
           global.renderPage();
         }
-      };
+      }
 
       // Show previous page
 
-      const showPreviousPage = () => {
+      function showPreviousPage() {
         if (global.pageNum <= 1) {
           return;
         }
         global.pageNum--;
         qPageRendering(global.pageNum);
-      };
+      }
 
       // Show next page
 
-      const showNextPage = () => {
+      function showNextPage() {
         if (global.pageNum >= global.pdfDoc.numPages) {
           return;
         }
         global.pageNum++;
         qPageRendering(global.pageNum);
-      };
+      }
 
       // Move pages
 

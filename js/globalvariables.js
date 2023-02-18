@@ -29,6 +29,7 @@ class Global {
       //  extracting text from pdf
 
       page.getTextContent().then((data) => {
+        this.pdfText = '';
         data.items.forEach((txtObj) => (this.pdfText += txtObj.str));
       });
       // scale
