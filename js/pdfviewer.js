@@ -1,9 +1,14 @@
 const pdfViewer = (() => {
   const modalPlaceholder = document.getElementById("modal-place-holder");
+  let tts = null;
 
   const bookPreviewCard = document.querySelectorAll(".book-preview-card");
   bookPreviewCard.forEach((targetedBook) => {
     targetedBook.addEventListener("click", (e) => {
+      if (tts) {
+        tts.stop();
+        // tts = null
+      }
       const filePath = targetedBook.getAttribute("file-path");
       let randomId = "";
 
@@ -50,7 +55,7 @@ const pdfViewer = (() => {
 
       // create tts
 
-      let tts = new TTS(global.pdfText);
+      tts = new TTS(global.pdfText);
       const AudtMoveNextPage = setInterval(() => {
         console.log(global.pdfText);
         if (tts.isEnded) {

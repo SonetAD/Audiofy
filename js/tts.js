@@ -5,7 +5,7 @@ class TTS {
     this.speakText = new SpeechSynthesisUtterance(text);
     this.isEnded = true;
     this.paused;
-    speechSynthesis.addEventListener('voiceschanged', this.populatedVoiceList);
+    speechSynthesis.addEventListener("voiceschanged", this.populatedVoiceList);
   }
 
   populatedVoiceList() {
@@ -23,16 +23,16 @@ class TTS {
   speak() {
     this.isEnded = false;
     if (speechSynthesis.speaking) {
-      console.error('Already speaking');
+      console.error("Already speaking");
       return;
     }
 
-    this.speakText.addEventListener('error', (e) => {
-      console.error('Something is not working.Please try again');
+    this.speakText.addEventListener("error", (e) => {
+      console.error("Something is not working.Please try again");
     });
 
     // Error while speaking
-    this.speakText.addEventListener('end', (e) => {
+    this.speakText.addEventListener("end", (e) => {
       this.isEnded = true;
     });
 
@@ -49,5 +49,9 @@ class TTS {
   resume() {
     speechSynthesis.resume();
     this.paused = speechSynthesis.paused;
+  }
+
+  stop() {
+    speechSynthesis.cancel();
   }
 }
