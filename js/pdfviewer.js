@@ -1,14 +1,9 @@
 const pdfViewer = (() => {
   const modalPlaceholder = document.getElementById("modal-place-holder");
-  let tts = null;
 
   const bookPreviewCard = document.querySelectorAll(".book-preview-card");
   bookPreviewCard.forEach((targetedBook) => {
     targetedBook.addEventListener("click", (e) => {
-      if (tts) {
-        tts.stop();
-        // tts = null
-      }
       const filePath = targetedBook.getAttribute("file-path");
       let randomId = "";
 
@@ -55,8 +50,8 @@ const pdfViewer = (() => {
 
       // create tts
 
-      tts = new TTS(global.pdfText);
-      const AudtMoveNextPage = setInterval(() => {
+      let tts = new TTS(global.pdfText);
+      setInterval(() => {
         console.log(global.pdfText);
         if (tts.isEnded) {
           tts = new TTS(global.pdfText);
@@ -139,3 +134,14 @@ const pdfViewer = (() => {
     });
   });
 })();
+
+document.addEventListener("click", reloadPage);
+document.addEventListener("keydown", reloadPage);
+
+function reloadPage(e) {
+  console.log(e.keyCode);
+  if (e.target.className === "modal fade" || e.keyCode === 27) {
+    location.href = "index.html";
+  }
+  e.preventDefault();
+}
