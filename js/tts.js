@@ -1,11 +1,10 @@
 class TTS {
+  static selectedVoice = JSON.parse(localStorage.getItem("selectedVoice"));
   constructor(text) {
     this.utter = new SpeechSynthesisUtterance();
-    this.voices = [];
     this.speakText = new SpeechSynthesisUtterance(text);
     this.isEnded = true;
     this.paused;
-    speechSynthesis.addEventListener("voiceschanged", this.populatedVoiceList);
   }
 
   populatedVoiceList() {
@@ -36,7 +35,21 @@ class TTS {
       this.isEnded = true;
     });
 
-    this.speakText.voice = this.voices[0];
+    let voiceList = speechSynthesis.getVoices();
+    if (!voiceList) {
+      speechSynthesis.addEventListener("voiceschanged", () => {
+        voiceList = this.getVoices();
+      });
+    }
+    voiceList.forEach((v) => {
+      if (
+        v.lang === TTS.selectedVoice.lang &&
+        v.name === TTS.selectedVoice.name &&
+        v.voiceURI === TTS.selectedVoice.voiceURI
+      ) {
+        this.speakText.voice = v;
+      }
+    });
     this.speakText.rate = 1;
     this.speakText.pitch = 1;
     speechSynthesis.speak(this.speakText);
@@ -54,4 +67,24 @@ class TTS {
   stop() {
     speechSynthesis.cancel();
   }
+}
+
+if (!TTS.selectedVoice) {
+  let voices = speechSynthesis.getVoices();
+  if (!voices) {
+    speechSynthesis.addEventListener("voiceschanged", () => {
+      voices = this.getVoices();
+    });
+  }
+  localStorage.setItem("selectedVoice", voiceJsonConverter(voices[0]));
+  TTS.selectedVoice = voices[0];
+}
+
+function voiceJsonConverter(voice) {
+  const modVoice = {};
+  for (v in voice) {
+    modVoice[v] = voice[v];
+  }
+  console.log(JSON.stringify(modVoice));
+  return JSON.stringify(modVoice);
 }

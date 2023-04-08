@@ -52,7 +52,6 @@ const pdfViewer = (() => {
 
       let tts = new TTS(global.pdfText);
       setInterval(() => {
-        console.log(global.pdfText);
         if (tts.isEnded) {
           tts = new TTS(global.pdfText);
           tts.speak();
