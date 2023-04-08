@@ -1,12 +1,12 @@
 class Global {
   constructor(canvas, pageNum = 1, scale = 1) {
     this.canvas = canvas;
-    this.ctx = canvas.getContext('2d');
+    this.ctx = canvas.getContext("2d");
     this.pageNum = pageNum;
     this.scale = scale;
     this.pdfDoc = null;
     this.pageIsRendering = false;
-    this.pdfText = '';
+    this.pdfText = "";
     this.pageNumIsPending = null;
     this.shortPreview = false;
   }
@@ -29,7 +29,7 @@ class Global {
       //  extracting text from pdf
 
       page.getTextContent().then((data) => {
-        this.pdfText = '';
+        this.pdfText = "";
         data.items.forEach((txtObj) => (this.pdfText += txtObj.str));
       });
       // scale

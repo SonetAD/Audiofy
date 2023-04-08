@@ -7,18 +7,6 @@ class TTS {
     this.paused;
   }
 
-  populatedVoiceList() {
-    this.voices = this.getVoices();
-    console.log(this.voices);
-    this.voices.forEach((voice) => {
-      // const option = document.createElement('option');
-      // option.textContent = `${voice.name}(${voice.lang})`;
-      // option.setAttribute('data-lang', voice.lang);
-      // option.setAttribute('data-name', voice.name);
-      // selectVoices.append(option);
-    });
-  }
-
   speak() {
     this.isEnded = false;
     if (speechSynthesis.speaking) {
@@ -69,13 +57,13 @@ class TTS {
   }
 }
 
+let voices = speechSynthesis.getVoices();
+if (!voices) {
+  speechSynthesis.addEventListener("voiceschanged", () => {
+    voices = this.getVoices();
+  });
+}
 if (!TTS.selectedVoice) {
-  let voices = speechSynthesis.getVoices();
-  if (!voices) {
-    speechSynthesis.addEventListener("voiceschanged", () => {
-      voices = this.getVoices();
-    });
-  }
   localStorage.setItem("selectedVoice", voiceJsonConverter(voices[0]));
   TTS.selectedVoice = voices[0];
 }
@@ -88,3 +76,29 @@ function voiceJsonConverter(voice) {
   console.log(JSON.stringify(modVoice));
   return JSON.stringify(modVoice);
 }
+
+const changeVoiceBtn = document.getElementById("changeVoiceBtn");
+changeVoiceBtn.addEventListener("click", (e) => {
+  const voiceSelectedBox = document.querySelector("#voice-select");
+  voices.forEach((voice) => {
+    const option = document.createElement("option");
+    option.textContent = `${voice.name}(${voice.lang})`;
+    option.setAttribute("data-lang", voice.lang);
+    option.setAttribute("data-name", voice.name);
+    voiceSelectedBox.append(option);
+  });
+  document.addEventListener("click", (e) => {
+    if (e.target.className.includes("saveVoice")) {
+      const chosenVoice = voiceSelectedBox.value;
+      voices.forEach((v) => {
+        const modedVoice = `${v.name}(${v.lang})`;
+        if (modedVoice === chosenVoice) {
+          localStorage.setItem("selectedVoice", voiceJsonConverter(v));
+        }
+      });
+      location.href = "index.html";
+    }
+    e.preventDefault();
+  });
+  e.preventDefault();
+});

@@ -14,11 +14,20 @@ const pdfViewer = (() => {
         }
       }
       modalPlaceholder.innerHTML = "";
+      const bgColors = [
+        "bg-primary",
+        "bg-info",
+        "bg-secondary",
+        "bg-danger",
+        "bg-success",
+        "bg-warning",
+      ];
+      var randBgColor = bgColors[Math.floor(Math.random() * bgColors.length)];
 
       const modal = `
 
 <!-- Modal -->
-<div class="modal fade" id=${randomId} tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+<div class="modal fade ${randBgColor}" id=${randomId} tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
