@@ -19,7 +19,7 @@ body {
     );
 }
 
-c.ustom-card {
+.custom-card {
   transition: all 300ms;
 }
 .custom-card:hover {
