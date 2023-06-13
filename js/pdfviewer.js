@@ -147,8 +147,9 @@ document.addEventListener("click", reloadPage);
 document.addEventListener("keydown", reloadPage);
 
 function reloadPage(e) {
-  console.log(e.keyCode);
-  if (e.target.className === "modal fade" || e.keyCode === 27) {
+  console.log(e.target.className);
+  console.log("fuck");
+  if (e.target.className.includes("modal fade") || e.keyCode === 27) {
     location.href = "index.html";
   }
   e.preventDefault();
