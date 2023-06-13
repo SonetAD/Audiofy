@@ -30,3 +30,18 @@ body {
 .current-page {
   width: 10px;
 }
+
+.addBookBtn {
+  background-color: green;
+  width: 50px;
+  height: 50px;
+  padding: 10px;
+  border-radius: 50%;
+  position: fixed;
+  top: 80vh;
+  left: 90vw;
+}
+
+.addBookBtn:hover {
+  cursor: pointer;
+}
